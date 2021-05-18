@@ -1,10 +1,10 @@
 
 <?php
 require_once ("verificationOtentification.php");
-require_once ("connexion.php");
+require_once ("connexionPDO.php");
 
-$sql = "SELECT code, nom, photo FROM etudiant";
-$result = $conn->query($sql);
+$stmt = $conn-> prepare("SELECT code, nom, photo FROM etudiant");
+$stmt->execute();
 
 /* if ($result->num_rows > 0) {
   // output data of each row
@@ -33,13 +33,13 @@ $result = $conn->query($sql);
         <tr>
             <th>CODE</th><th>NOM</th><th>PHOTO</th>
         </tr>
-        <?php while($row = $result->fetch_assoc()) { ?>
+        <?php while($user=$stmt->fetch(PDO::FETCH_ASSOC)) { ?>
             <tr>
-                <td><?php echo($row['code']); ?></td>
-                <td><?php echo($row['nom']); ?></td>
-                <td><img max-width = 200px max-height = 200px src="images/<?php echo($row['photo']); ?>"></td>
-                <td><a href="supprimerEtudiant.php?code=<?php echo($row['code']); ?>">Supprimer</a></td>
-                <td><a href="editerEtudiant.php?code=<?php echo($row['code']); ?>">Modifier</a></td>
+                <td><?php echo($user['code']); ?></td>
+                <td><?php echo($user['nom']); ?></td>
+                <td><img max-width = 200px max-height = 200px src="images/<?php echo($user['photo']); ?>"></td>
+                <td><a href="supprimerEtudiant.php?code=<?php echo($user['code']); ?>">Supprimer</a></td>
+                <td><a href="editerEtudiant.php?code=<?php echo($user['code']); ?>">Modifier</a></td>
             </tr>
         <?php } ?>
     </table>

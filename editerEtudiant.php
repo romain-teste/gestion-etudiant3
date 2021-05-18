@@ -3,15 +3,15 @@ require_once ("verificationOtentification.php");
 ?>
 
 <?php 
-require_once ("connexion.php");
+require_once ("connexionPDO.php");
 
 $code = $_GET['code'];
 
-$rep = "SELECT code, nom, mail FROM etudiant WHERE code=$code";
+$stmt = $conn-> prepare("SELECT code, nom, mail FROM etudiant WHERE code= :code");
+$stmt->bindParam(':code', $code);
+$stmt->execute();
 
-$rs = $conn->query($rep);
-
-$row = $rs->fetch_assoc();
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -28,15 +28,15 @@ $row = $rs->fetch_assoc();
         <table>
             <tr>
                 <td>Code:</td>
-                <td><input type="text" name="code" value="<?php echo($row['code']) ?>"></td>
+                <td><input type="text" name="code" value="<?php echo($user['code']) ?>"></td>
             </tr>
             <tr>
                 <td>Nom:</td>
-                <td><input type="text" name="nom" value="<?php echo($row['nom']) ?>"></td>
+                <td><input type="text" name="nom" value="<?php echo($user['nom']) ?>"></td>
             </tr>
             <tr>
                 <td>Email:</td>
-                <td><input type="email" name="email" value="<?php echo($row['mail']) ?>"></td>
+                <td><input type="email" name="email" value="<?php echo($user['mail']) ?>"></td>
             </tr>
             <tr>
                 <td>Poto:</td>
